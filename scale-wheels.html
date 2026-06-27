@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎵</text></svg>">
+<title>Scale Wheels — Major vs Chinese Pentatonic</title>
+<link rel="stylesheet" href="./styles.css">
+<style>
+  .wheels{display:grid; grid-template-columns:1fr 1fr; gap:24px; align-items:start;}
+  @media(max-width:720px){ .wheels{grid-template-columns:1fr;} }
+  .wheel{text-align:center;}
+  .wheel h3{margin:0 0 1px; font-size:19px;}
+  .wheel .deg{color:var(--muted); font-size:13px; margin:0 0 6px;}
+  .wheel svg{max-width:360px; width:100%; height:auto; margin:0 auto; cursor:pointer;}
+  .note{cursor:pointer;}
+  .steps{margin-top:8px; color:var(--muted); font-size:13px;}
+  .steps b{color:var(--ink);}
+  .play-row{display:flex; gap:12px; justify-content:center; margin:18px 0 2px; flex-wrap:wrap;}
+</style>
+</head>
+<body>
+<header class="site-head">
+  <h1>Scale Wheels</h1>
+  <nav class="site-nav">
+    <a href="./index.html">Compare</a>
+    <a href="./statistics.html">Stats</a>
+    <a href="./scale-wheels.html">Scales</a>
+    <a href="./interval-analyzer.html">Analyzer</a>
+  </nav>
+</header>
+<p class="sub">Each scale drawn on the 12-tone clock (12 o'clock = the tonic; one step clockwise = one semitone). The colored dots are the scale degrees, and the number on each edge is the semitone step between consecutive degrees — so the <em>shape</em> shows the scale's character. Left: the Western <strong>major scale</strong> (C D E F G A B). Right: the Chinese <strong>pentatonic</strong> 宫商角徵羽 (C D E G A). Press <strong>Play</strong> to hear each, or play both to compare. Click any dot to hear that note.</p>
+
+<main class="wrap">
+  <div class="card">
+    <div class="wheels">
+      <div class="wheel">
+        <h3>Major scale</h3>
+        <div class="deg">Do Re Mi Fa Sol La Ti · 7 notes</div>
+        <div id="wMajor"></div>
+        <div class="steps" id="sMajor"></div>
+      </div>
+      <div class="wheel">
+        <h3>Chinese pentatonic · 宫商角徵羽</h3>
+        <div class="deg">gōng shāng jué zhǐ yǔ · 5 notes</div>
+        <div id="wPenta"></div>
+        <div class="steps" id="sPenta"></div>
+      </div>
+    </div>
+    <div class="play-row">
+      <button onclick="playOne('major')">▶ Play major</button>
+      <button onclick="playOne('penta')">▶ Play pentatonic</button>
+      <button class="ghost" onclick="playBoth()">▶ Play both (compare)</button>
+      <button class="stop" onclick="stopAll()">⏹ Stop</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Reading the wheels</h2>
+    <p style="font-size:14px; line-height:1.6; margin:0;">
+      The major scale steps go <b>2·2·1·2·2·2·1</b> semitones — seven notes with two small (1-semitone)
+      gaps, filling the octave fairly evenly (a seven-sided shape). The 宫-mode (gōng) pentatonic steps go
+      <b>2·2·3·2·3</b> — five notes with <em>no semitones at all</em>; the two 3-semitone gaps (where
+      <b>fa</b> and <b>ti</b> would be) give it its open, gapped character (a five-sided shape).
+      Removing those two leading-tone tendencies is a big part of why the pentatonic sounds distinctly
+      Chinese rather than Western. Tonic = C (1=宫); audio is a simple sine synth.
+    </p>
+  </div>
+</main>
+
+<footer class="foot">
+  © 2026 <a href="https://github.com/YueYvetteHao" target="_blank" rel="noopener">Yue Hao</a>. All Rights Reserved.
+</footer>
+
+<script>
+/* ---- scales ---- */
+var SCALES = {
+  major: { semis:[0,2,4,5,7,9,11], dots:['C','D','E','F','G','A','B'],
+           outer:['Do','Re','Mi','Fa','Sol','La','Ti'], color:'#3b78c3' },
+  penta: { semis:[0,2,4,7,9],       dots:['C','D','E','G','A'],
+           outer:['宫','商','角','徵','羽'],            color:'#c0392b' }
+};
+
+/* ---- geometry + render ---- */
+var CX=180, CY=180, R=120;
+function pos(semi, rad){ rad=rad||R; var a=(semi*30-90)*Math.PI/180; return [CX+rad*Math.cos(a), CY+rad*Math.sin(a)]; }
+
+function renderWheel(elId, scale){
+  var g='';
+  g+='<circle cx="'+CX+'" cy="'+CY+'" r="'+R+'" fill="none" stroke="#e3e1da" stroke-width="2"/>';
+  // 12 chromatic ticks
+  for(var i=0;i<12;i++){ var p=pos(i); g+='<circle cx="'+p[0].toFixed(1)+'" cy="'+p[1].toFixed(1)+'" r="3" fill="#cfcabd"/>'; }
+  // scale polygon
+  var pts=scale.semis.map(function(s){return pos(s);});
+  var d='M '+pts.map(function(p){return p[0].toFixed(1)+' '+p[1].toFixed(1);}).join(' L ')+' Z';
+  g+='<path d="'+d+'" fill="'+scale.color+'1f" stroke="'+scale.color+'" stroke-width="2" stroke-linejoin="round"/>';
+  // edge step labels
+  var n=scale.semis.length;
+  for(var j=0;j<n;j++){
+    var a=pos(scale.semis[j]), b=pos(scale.semis[(j+1)%n]);
+    var mx=(a[0]+b[0])/2, my=(a[1]+b[1])/2;
+    // pull slightly toward center for legibility
+    mx=CX+(mx-CX)*0.82; my=CY+(my-CY)*0.82;
+    var step=((scale.semis[(j+1)%n]-scale.semis[j])%12+12)%12;
+    g+='<text x="'+mx.toFixed(1)+'" y="'+(my+4).toFixed(1)+'" text-anchor="middle" font-size="12" font-weight="700" fill="'+scale.color+'" stroke="#fff" stroke-width="3" paint-order="stroke" style="paint-order:stroke">'+step+'</text>';
+  }
+  // outer degree labels
+  scale.semis.forEach(function(s,idx){
+    var o=pos(s, R+26);
+    g+='<text x="'+o[0].toFixed(1)+'" y="'+(o[1]+4).toFixed(1)+'" text-anchor="middle" font-size="14" font-weight="600" fill="'+scale.color+'">'+scale.outer[idx]+'</text>';
+  });
+  // scale note dots + names
+  scale.semis.forEach(function(s,idx){
+    var p=pos(s);
+    g+='<g class="note" data-i="'+idx+'" data-semi="'+s+'">';
+    g+='<circle cx="'+p[0].toFixed(1)+'" cy="'+p[1].toFixed(1)+'" r="14" fill="'+scale.color+'"/>';
+    g+='<text x="'+p[0].toFixed(1)+'" y="'+(p[1]+5).toFixed(1)+'" text-anchor="middle" font-size="14" font-weight="700" fill="#fff" pointer-events="none">'+scale.dots[idx]+'</text>';
+    g+='</g>';
+  });
+  document.getElementById(elId).innerHTML='<svg viewBox="0 0 360 360" xmlns="http://www.w3.org/2000/svg">'+g+'</svg>';
+}
+
+function stepsText(scale){
+  var n=scale.semis.length, arr=[];
+  for(var j=0;j<n;j++){ arr.push(((scale.semis[(j+1)%n]-scale.semis[j])%12+12)%12); }
+  return 'Steps (semitones): <b>'+arr.join(' · ')+'</b>';
+}
+
+/* ---- audio ---- */
+var actx=null, timers=[];
+function ac(){ if(!actx) actx=new (window.AudioContext||window.webkitAudioContext)(); return actx; }
+// iOS: resume() must finish inside the tap before notes are scheduled, then a 1-sample silent buffer
+// unlocks the audio output (otherwise the iPhone stays silent off-mute). Mirrors engine.js.
+async function unlock(){
+  var a=ac();
+  if(a.state==='suspended'){ try{ await a.resume(); }catch(e){} }
+  try{ var b=a.createBuffer(1,1,22050), s=a.createBufferSource(); s.buffer=b; s.connect(a.destination); s.start(0); }catch(e){}
+  return a;
+}
+function tone(semi, when, dur){
+  var a=ac(), o=a.createOscillator(), gn=a.createGain();
+  o.type='sine'; o.frequency.value=261.63*Math.pow(2, semi/12);
+  gn.gain.setValueAtTime(0, when); gn.gain.linearRampToValueAtTime(0.6, when+0.03);
+  gn.gain.setValueAtTime(0.6, when+Math.max(0.05,dur-0.05)); gn.gain.linearRampToValueAtTime(0, when+dur);
+  o.connect(gn); gn.connect(a.destination); o.start(when); o.stop(when+dur);
+}
+function dotsOf(key){ return document.getElementById(key==='major'?'wMajor':'wPenta').querySelectorAll('.note'); }
+function hi(dot,on){
+  var c=dot.querySelector('circle'); if(!c) return;
+  c.setAttribute('r', on?'18':'14'); dot.style.filter = on?'brightness(1.18)':'none';
+}
+function clearHi(key){ dotsOf(key).forEach(function(d){ hi(d,false); }); }
+
+function playScale(key, baseDelay, after){
+  var a=ac(), scale=SCALES[key], dur=0.46;
+  var seq=scale.semis.concat([scale.semis[0]+12]);   // ascend + octave
+  var dots=dotsOf(key), t0=a.currentTime+0.06+(baseDelay||0);
+  seq.forEach(function(s,k){
+    tone(s, t0+k*dur, dur*0.92);
+    var idx=(k<scale.semis.length)?k:0;
+    timers.push(setTimeout(function(){ clearHi(key); hi(dots[idx],true); }, (t0-a.currentTime+k*dur)*1000));
+  });
+  timers.push(setTimeout(function(){ clearHi(key); if(after) after(); }, (t0-a.currentTime+seq.length*dur)*1000));
+}
+async function playOne(key){ stopAll(); await unlock(); playScale(key,0); }
+async function playBoth(){ stopAll(); await unlock(); playScale('major',0,function(){ playScale('penta',0.15); }); }
+function stopAll(){ timers.forEach(clearTimeout); timers=[]; clearHi('major'); clearHi('penta'); }
+
+/* click a single dot to hear it */
+function wireClicks(key){
+  dotsOf(key).forEach(function(d){
+    d.addEventListener('click', async function(){
+      var s=+d.getAttribute('data-semi'); var a=await unlock();
+      tone(s, a.currentTime+0.02, 0.5); clearHi(key); hi(d,true);
+      setTimeout(function(){ hi(d,false); }, 480);
+    });
+  });
+}
+
+/* ---- init ---- */
+renderWheel('wMajor', SCALES.major);
+renderWheel('wPenta', SCALES.penta);
+document.getElementById('sMajor').innerHTML=stepsText(SCALES.major);
+document.getElementById('sPenta').innerHTML=stepsText(SCALES.penta);
+wireClicks('major'); wireClicks('penta');
+</script>
+</body>
+</html>

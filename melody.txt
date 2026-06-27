@@ -1,0 +1,197 @@
+# ============================================================
+# Folk-Melody Database
+# Samples = Chinese folk songs + melodies inspired by / adapted from Chinese folk songs
+# (covers field-collected tunes, arranged/folk-idiom pieces, and works with piano adaptations).
+# ------------------------------------------------------------
+# FORMAT
+#   - one block per melody ("field: value"); blocks separated by a line of  ---
+#   - a whole line starting with # is a comment (no inline comments — they'd be read as the value)
+#   - parsing: split on ---, then split each line on the FIRST colon ":" into field / value
+#
+# FIELDS
+#   id      latin slug used in the URL (auto-generated if omitted)
+#   title   song title (kept in Chinese)
+#   region  陕北 / 陕西 / 山东 / 江南 …  (place name; also used as the grouping key)
+#   source  origin / edition (name the songbook, for citation)
+#   key     1=C / D / E / F / G / A / B
+#   meter   2/4 | 3/4 | 4/4
+#   bpm     playback tempo (optional)
+#   jianpu  theme in numbered notation 简谱 (see notation below)
+#   jianpu2 / jianpu3 …  optional extra themes (each parsed & shown as a separate analyzer)
+#   key2 / meter2 / bpm2 …  optional per-theme overrides (fall back to the base key/meter/bpm)
+#   notes   remarks
+#   reading off  → hide the auto "Reading" verdict (for pieces a texture-only heuristic would misread)
+#   image   optional image path (e.g. assets/foo.jpeg) — shown in an "About this piece" card
+#   about   optional rich HTML write-up (single line) — shown in the "About this piece" card
+#   video / video_title  optional listening link (e.g. YouTube) — shown in the About card
+#   piano   linked piano adaptation, if any (Phase-3 pedagogy)
+#
+# JIANPU 简谱 NOTATION
+#   1-7 scale degrees · 0 rest · ' octave up , octave down · _ eighth __ sixteenth ·
+#   . dotted · - hold +1 beat · # / b accidental · | bar line
+#   (format example, not a real tune): 3-3561'1'65-565---
+#
+# NOTE: interval stats are pitch-only (rhythm & tempo affect only notation/playback). Transcriptions
+#   are curated by Yue — verify against a trusted source before citing in the paper.
+# ============================================================
+
+
+# ========== Northern Shaanxi 陕北 ==========
+
+id: sanshilipu
+title: 三十里铺
+en: Sanshilipu (Thirty-Li Village)
+region: 陕北
+source: 陕北 (N. Shaanxi) / 绥德 (Suide) folk song
+key: 1=C
+meter: 2/4
+bpm: 76
+jianpu: 1'_2'2'_5'_1'6_5_.6__5_2_5-1'_2'2'_5'_1'6_5_.6__5_2_5-1'_45_1'_1'6_5_.6__5_2_5-4_.4__3_2_1_2_5_2_1-
+notes: A Northern Shaanxi (陕北) narrative folk song from Suide(绥德), built on a real local love story — one of the best-known xintianyou-style ballads of the region.
+image: assets/sanshilipu.jpeg
+about: <p>"Sanshilipu" is a folk song in the style of Xintianyou, originated in Shaanxi province in northwestern China. Xintianyou (信天游) literally means "rambling in the sky".</p><p>The Yellow River carved deep canyons through the Loess Plateau; people would yell across the canyons to communicate with folks on the other side. Such way of communication further developed into the bold, straightforward, high-pitched and unrestrained style of singing, which also reflects in the melody.</p><p>The lyrics were based on a true story in 1937:</p><blockquote>Speaking of home, my home is famous,<br>I live in Suide County, Sanshilipu Village,<br>The fourth sister of WANG Family falls in love with the third brother of HAO Family,<br>He is my soulmate.</blockquote>
+video: https://www.youtube.com/watch?v=zjbXUn2w-Rw
+video_title: Variations on a Theme of Folk Songs from Shaanxi (Zhou Guangren)
+piano: 周广仁《陕北民歌叙事曲（三十里铺）》— piano work, Zhou Guangren. [Phase-3 pedagogy]
+
+---
+id: shandandan
+title: 山丹丹开花红艳艳
+en: Mountain Lilies Bloom Bright Red
+region: 陕北
+source: Arr. 刘烽 (Liu Feng), 1971; based on 陕北 (N. Shaanxi) xintianyou + 陇东 (E. Gansu) folk song
+key: 1=C
+meter: 2/2
+bpm: 88
+jianpu: 2'3'_2'_6_.6__6_6_2'3'_2'_2'-2'.5'_1'7_6_5--5_5_66_3'_2'1'_7_6_45_62'54_3_26,_1_2---
+jianpu2: 2'62'62'_.1'__2'_3'_2'-5'_5'2'_3'_2'_1'6_.5__4_2_5-6_3'_2'_1'_2'1'6_2'_6_2_4.5_6_65_4_6_5_3_2.1_2-
+meter2: 4/4
+bpm2: 140
+notes: A 1971 arrangement (刘烽 / Liu Feng) drawn from N. Shaanxi xintianyou and E. Gansu (陇东) tunes, celebrating the Red Army's arrival in northern Shaanxi; iconic and widely sung — an arrangement, not a field recording. One of the landing-page comparison pieces.
+piano: 王建中《山丹丹开花红艳艳》— piano arrangement, Wang Jianzhong. [Phase-3 pedagogy]
+
+
+---
+id: lanhuahua
+title: 兰花花
+en: Lanhuahua
+region: 陕北
+source: 陕北 (N. Shaanxi) folk song
+key: 1=F
+meter: 4/4
+bpm: 120
+jianpu: 62'66_5_62'6----2'5.6_33_2_16,--2.3_5536532._3__2_1_6,5,6,---
+notes: A N. Shaanxi narrative ballad about a spirited girl forced into a loveless marriage who defies it — a beloved tragic love song (title also written 蓝花花).
+piano: 汪立三《兰花花》— piano work, Wang Lisan. [Phase-3 pedagogy]
+
+---
+id: jiaofudiao
+title: 脚夫调
+en: The Porter's Tune
+region: 陕北
+source: 陕北 (N. Shaanxi) xintianyou
+key: 1=C
+meter: 2/4
+bpm: 66
+jianpu: 5,._1_1_1__1__ | 2_5. | 5__1'__52_ | 1- | 5,_1_1_1_ | 2_5_2__1__2_ | 5_2__1__6,__5,__6,_ | 5,-
+notes: A classic N. Shaanxi xintianyou (Suide/Mizhi 绥德/米脂 area) voicing a muleteer driven from home — high and impassioned, built on repeated rising-4th leaps: a textbook case of the oscillating-leap idiom.
+
+---
+
+# ========== Shaanxi modern pop 陕西 ==========
+
+
+---
+id: zhujue
+title: 主角
+en: The Protagonist (Zhujue)
+region: 陕西
+source:
+key: 1=G
+meter: 4/4
+bpm: 74
+jianpu: 3'_3'_3'_6_3'_6_3'2'_2'_2'_6_2'_1'_60_6_3'_6_6_6_5'_5'6-.
+notes: Theme song (2026) of the TV series 《主角》, sung by 王菲 (Faye Wong) — folk-inspired pop weaving Guanzhong (关中) dialect, Qinqiang (Shaanxi opera) vocal style, and a sampled Shaanxi folk tune 《月亮爷》. It carries the N. Shaanxi oscillating-leap idiom (~50% wide leaps, alternating up/down) — a stylized modern echo of the signature.
+
+---
+
+id: xianren
+title: 西安人的歌
+en: Song of the Xi'an People
+region: 陕西
+source:
+key: 1=B
+meter: 4/4
+bpm: 74
+jianpu: 3_3_5_3_5_5_5_1_6,_6,_1_6,_5,_1.6,_6,_1_6,_1_5_5_5,_3,_5,_3,_5,_5,_5,
+reading: off
+notes: A Xi'an-dialect song (2016) by 程渤智 (Cheng Bozhi) that became a city anthem, packed with Xi'an landmarks and local color. Its syllabic, speech-like delivery (~30% repeated pitches, narrow motion, few leaps) makes it a "speech-song bridge" near the speech end of the speech→song continuum.
+
+---
+
+# ========== Shandong 山东 ==========
+
+id: yimengshan
+title: 沂蒙山小调
+en: Yimeng Mountain Tune
+region: 山东
+source: 山东 (Shandong) folk song; lyrics 阮若珊 (Ruan Ruoshan), music 李林 (Li Lin); arranged 1940s
+key: 1=G
+meter: 3/4
+bpm: 98
+jianpu: 253_2_35_3_2_1_2--2523_5_3_2_1_6,_1--132_3_5,2_7,_6,_5,_6,--1.2_7,_6,_5,_3,_5,--
+notes: A Shandong (山东) folk song that grew from a 1940 tune (lyrics 阮若珊 / Ruan Ruoshan, music 李林 / Li Lin) into a lyrical ode to the Yimeng (沂蒙) hills; famous for its "fish-biting-tail" (鱼咬尾) phrase-chaining. Included as a third-texture extension beyond the Shannxi-vs-Jiangnan contrast.
+
+---
+
+# ========== Jiangnan 江南 ==========
+
+id: molihua
+title: 茉莉花
+en: Jasmine Flower
+region: 江南
+source: 江苏 (Jiangsu) folk song; collected by 何仿 (He Fang); 《中国民歌集成·江苏卷》(Anthology of Folk Songs of the Chinese Peoples: Jiangsu Volume)
+key: 1=C
+meter: 4/4
+bpm: 90
+jianpu: 33_5_6_1'_1'_6_55_6_5-33_5_6_1'_1'_6_55_6_5-5553_5_665-32_3_53_2_11_2_1-
+notes: The most famous Jiangnan (Jiangsu 江苏) folk song, collected and arranged by 何仿 (He Fang) from the older tune 《鲜花调》; internationally known (quoted in Puccini's Turandot). The landing-page foil to 《山丹丹开花红艳艳》.
+
+---
+id: zizhudiao
+title: 紫竹调
+en: Purple Bamboo Tune
+region: 江南
+source: 江南 (Jiangnan) folk xiaodiao / 沪剧 (Shanghai opera) qupai (labeled tune)
+key: 1=D
+meter: 2/4
+bpm: 96
+jianpu: 6_6__1'__5_3_6_6__1'__5_3_2_3__5__2__1__6,_1.2_3_1'6__5__3_3__5__6__5__6__1'__5-
+jianpu2: 3_3__5__6__5__6__1'__5.6_1'_6__5__3__5__6__1'__5.6_5_51'_6__1'__6__5__35_2_3_5_1.6,_1_.2__5_3_2__3__2__1__23_5_5_6,_1_.2__7,__6,__5,_6,-
+notes: A light, lyrical Jiangnan ditty (xiaodiao 小调; incipit "一根紫竹直苗苗") — a stock tune of Jiangnan sizhu (silk-and-bamboo) ensembles and Shanghai opera.
+
+---
+id: wuxijing
+title: 无锡景
+en: Scenes of Wuxi
+region: 江南
+source: 无锡 (Wuxi), 江苏 (Jiangsu) xiaodiao
+key: 1=C
+meter: 4/4
+bpm: 110
+jianpu: 66_5_62'1'_.2'__1'_6_5-61'1'_6_5_6_1'---1'1'-2'3'.2'_3'.2'_1'3'2'1'1'_6_6_1'_5-
+jianpu2: 6_.1'__6_5_3-1'1'-2'6.1'_5-6_.1'__6_5_3-5561'5_.6__5_3_2-35523_5_3_2_1-
+notes: A late-Qing Jiangnan popular tune praising the scenery of Wuxi (无锡) — carried south along the Grand Canal and resung in the Wu dialect; refined, gentle and ornamented, it epitomizes the Jiangnan stepwise idiom.
+
+
+---
+id: mutongduandi
+title: 牧童短笛
+en: The Cowherd's Flute
+region: 江南
+source: Composed by 贺绿汀 (He Lüting), 1934 (piano piece)
+key: 1=A
+meter: 4/4
+bpm: 200
+jianpu: 3.2_3523_5_3_2_16,5,6,15,---3.2_3523_5_3_2_16,5,6,15,---5_6_5_3_2_3_56_5_3_2_1-6,_1_2_3_2_1_6,_1_5,---
+notes: 贺绿汀 (He Lüting)'s 1934 piano piece — folk-idiom pentatonic, not a collected song — which won Alexander Tcherepnin's prize for "a piano piece in Chinese style" and became a landmark of Chinese piano music. Included as a folk-inspired melody; the A-section pastoral theme is used here.

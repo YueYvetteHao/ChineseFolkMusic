@@ -1,0 +1,18 @@
+# macOS
+.DS_Store
+**/.DS_Store
+
+# Internal / WIP — not part of the public site
+Essen/
+draft/
+
+# scratch
+*.tmp
+node_modules/
+
+# image master (the optimized assets/banner.jpg is committed instead)
+assets/banner.png
+
+# Claude / internal docs
+.claude/
+CLAUDE.md

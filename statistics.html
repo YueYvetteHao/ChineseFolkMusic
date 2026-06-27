@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎵</text></svg>">
+<title>陕北 vs 江南 — 4-vs-4 Interval Statistics</title>
+<link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+<header class="site-head">
+  <h1>Northern Shaanxi vs Jiangnan <span class="en-title">4-vs-4 interval statistics</span></h1>
+  <nav class="site-nav">
+    <a href="./index.html">Compare</a>
+    <a href="./statistics.html">Stats</a>
+    <a href="./scale-wheels.html">Scales</a>
+    <a href="./interval-analyzer.html">Analyzer</a>
+  </nav>
+</header>
+<p class="sub">Four 陕北 (Northern Shaanxi) tunes — 三十里铺, 山丹丹开花红艳艳, 兰花花, 脚夫调 — against four 江南 (Jiangnan) tunes — 茉莉花, 紫竹调, 无锡景, 牧童短笛. For the three pieces with two themes (山丹丹开花红艳艳, 紫竹调, 无锡景), the themes are combined into one sample per tune. Every consecutive interval is measured in semitones; the panels below aggregate and test the two sets. (Interval stats are pitch-only.)</p>
+
+<main class="wrap">
+  <div class="card">
+    <h2>Headline finding</h2>
+    <div class="finding" id="finding">Loading…</div>
+  </div>
+
+  <div class="card">
+    <h2>Per-tune statistics</h2>
+    <div id="table"></div>
+    <p class="src" style="margin:12px 0 0">mean |leap| = mean absolute interval (semitones); % ≥ P4 = share of intervals a perfect 4th or wider (≥ 5 st); % ≤ M3 = share that are 3rds or smaller steps (1–4 st); osc = chained direction-reversing wide leaps. Remainder to 100% = unisons (repeated notes).</p>
+  </div>
+
+  <div class="card">
+    <h2>Significance tests</h2>
+    <div id="tests"></div>
+  </div>
+
+  <div class="card">
+    <h2 class="hist-h">Aggregate interval distribution (陕北 vs 江南) <button type="button" class="info-toggle" aria-expanded="false" aria-label="What the interval labels mean">ⓘ</button></h2>
+    <div class="interval-key" id="ikey" hidden></div>
+    <div id="plot-hist"></div>
+    <p class="src" style="margin:6px 0 0">Each bar = that interval's share of the region's intervals. The crossover is the whole story: 江南 peaks on 3rds (m3/M3), 陕北 peaks on 4ths/5ths (P4/P5).</p>
+  </div>
+
+  <div class="card">
+    <h2>Wide-leap share by tune</h2>
+    <div id="plot-leap"></div>
+  </div>
+
+  <div class="card">
+    <h2>Mean leap vs wide-leap %</h2>
+    <div id="plot-scatter"></div>
+    <p class="src" style="margin:6px 0 0">Each point is one tune. The clusters separate on the vertical axis (how often wide leaps occur), far more than on the horizontal (average leap size).</p>
+  </div>
+
+  <div class="card">
+    <h2>Oscillating leaps — the 陕北 saw-tooth</h2>
+    <div id="plot-osc"></div>
+    <p class="src" style="margin:6px 0 0">A leap up answered by a leap down (both ≥ P4). This chained, direction-reversing motion is the 陕北 signature and is almost absent in 江南.</p>
+  </div>
+</main>
+
+<footer class="foot">© 2026 <a href="https://github.com/YueYvetteHao" target="_blank" rel="noopener">Yue Hao</a>. All Rights Reserved.</footer>
+
+<script src="./melodies.js"></script>
+<script src="./engine.js"></script>
+<script src="./stats.js"></script>
+<script>
+  (function(){ var ikey=document.getElementById('ikey'), itog=document.querySelector('.info-toggle');
+    if(ikey && itog){ ikey.innerHTML=JP.intervalKeyHTML();
+      itog.addEventListener('click', function(){ var open=ikey.hidden; ikey.hidden=!open;
+        itog.setAttribute('aria-expanded', String(open)); itog.classList.toggle('on', open); }); } })();
+  JP.getMelodies('./melody.txt').then(function(db){ STATS.init(db); }).catch(function(e){
+    document.getElementById('finding').innerHTML='Couldn’t load melody.txt ('+e.message+'). For local preview run <code>python3 -m http.server</code>, or view on GitHub Pages.';
+  });
+</script>
+</body>
+</html>

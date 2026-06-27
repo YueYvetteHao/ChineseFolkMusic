@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎵</text></svg>">
+<title>茉莉花 — example · Folk Melody Texture</title>
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+<header class="site-head">
+  <h1>茉莉花 <span class="en-title">Jasmine Flower</span> <span class="tag jn" style="font-size:13px;vertical-align:middle">Jiangnan 江南</span></h1>
+  <nav class="site-nav">
+    <a href="../index.html">← Samples</a>
+    <a href="../statistics.html">Stats</a>
+    <a href="../scale-wheels.html">Scales</a>
+    <a href="../interval-analyzer.html">Analyzer</a>
+  </nav>
+</header>
+<p class="sub">The most famous Jiangnan (Jiangsu 江苏) folk song, collected and arranged by 何仿 (He Fang) from the older tune 《鲜花调》; internationally known (quoted in Puccini's Turandot). The landing-page foil to 《山丹丹开花红艳艳》. &nbsp;·&nbsp; <em>Standalone example — melody embedded; opens by double-click, no server.</em></p>
+<main class="wrap" id="app"></main>
+<footer class="foot">© 2026 <a href="https://github.com/YueYvetteHao" target="_blank" rel="noopener">Yue Hao</a>. All Rights Reserved.</footer>
+<script src="../engine.js"></script>
+<script>
+var M = {"id":"molihua","title":"茉莉花","en":"Jasmine Flower","region":"江南","source":"江苏 (Jiangsu) folk song; collected by 何仿 (He Fang); 《中国民歌集成·江苏卷》(Anthology of Folk Songs of the Chinese Peoples: Jiangsu Volume)","key":"1=C","meter":"4/4","bpm":"90","jianpu":"33_5_6_1'_1'_6_55_6_5-33_5_6_1'_1'_6_55_6_5-5553_5_665-32_3_53_2_11_2_1-","notes":"The most famous Jiangnan (Jiangsu 江苏) folk song, collected and arranged by 何仿 (He Fang) from the older tune 《鲜花调》; internationally known (quoted in Puccini's Turandot). The landing-page foil to 《山丹丹开花红艳艳》.","hasJianpu":true};
+var app=document.getElementById("app");
+if(M.about||M.image){var ab=document.createElement("div");ab.className="card about-card";var hd=document.createElement("h2");hd.textContent="About this piece";ab.appendChild(hd);if(M.image){var im=document.createElement("img");im.className="about-img";im.src="../"+M.image;im.alt=M.title||"";ab.appendChild(im);}if(M.about){var tx=document.createElement("div");tx.className="about-text";tx.innerHTML=M.about;ab.appendChild(tx);}if(M.video){var vl=document.createElement("p");vl.className="about-video";var va=document.createElement("a");va.href=M.video;va.target="_blank";va.rel="noopener";va.textContent="▶ "+(M.video_title||"Listen on YouTube");vl.appendChild(va);vl.appendChild(document.createTextNode(" (YouTube)"));ab.appendChild(vl);}app.appendChild(ab);}
+var ks=["jianpu","jianpu2","jianpu3","jianpu4"], themes=[];
+ks.forEach(function(k,i){var v=M[k]; if(v&&String(v).trim()&&String(v).trim().toUpperCase()!=="TODO"){var s=(i===0?"":String(i+1));themes.push({label:"Theme "+(i+1),jianpu:v,key:M["key"+s]||M.key,meter:M["meter"+s]||M.meter,bpm:M["bpm"+s]||M.bpm});}});
+if(themes.length>1){themes.forEach(function(t){var h=document.createElement("h2");h.className="theme-h";h.textContent=t.label;app.appendChild(h);var b=document.createElement("div");app.appendChild(b);JP.mountAnalyzer(b,{key:t.key,meter:t.meter,bpm:t.bpm,jianpu:t.jianpu});});}
+else {var b0=document.createElement("div");app.appendChild(b0);JP.mountAnalyzer(b0, M);}
+</script>
+</body>
+</html>

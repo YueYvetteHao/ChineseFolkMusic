@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎵</text></svg>">
+<title>Jianpu Interval Analyzer — Chinese Folk Melody Texture</title>
+<link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+<header class="site-head">
+  <h1>Jianpu 简谱 Interval Analyzer</h1>
+  <nav class="site-nav">
+    <a href="./index.html">Compare</a>
+    <a href="./statistics.html">Stats</a>
+    <a href="./scale-wheels.html">Scales</a>
+    <a href="./interval-analyzer.html">Analyzer</a>
+  </nav>
+</header>
+<p class="sub">Paste any melody in Jianpu 简谱 (numbered notation) → it quantifies the semitone distance between every consecutive pair of notes → and visualizes the contour and the interval distribution. A free-form playground; for the sample pieces see the <a href="./index.html">Compare</a> page. Distance metric = semitones (chromatic), each interval also named (e.g. Perfect 5th / P5).</p>
+
+<main class="wrap" id="app"></main>
+<footer class="foot">© 2026 <a href="https://github.com/YueYvetteHao" target="_blank" rel="noopener">Yue Hao</a>. All Rights Reserved.</footer>
+
+<script src="./engine.js"></script>
+<script>
+  // Seed the analyzer with the worked example (no server needed — runs by double-click).
+  JP.mountAnalyzer(document.getElementById('app'), {
+    key:'1=C', meter:'4/4', bpm:110, jianpu:"3-3561'1'65-565---"
+  });
+</script>
+</body>
+</html>

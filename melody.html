@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎵</text></svg>">
+<title>Melody — Chinese Folk Melody Texture</title>
+<link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+<header class="site-head">
+  <h1 id="title">Melody</h1>
+  <nav class="site-nav">
+    <a href="./index.html">← Samples</a>
+    <a href="./statistics.html">Stats</a>
+    <a href="./scale-wheels.html">Scales</a>
+    <a href="./interval-analyzer.html">Analyzer</a>
+  </nav>
+</header>
+<p class="sub" id="meta"></p>
+
+<main class="wrap" id="app"></main>
+<footer class="foot">© 2026 <a href="https://github.com/YueYvetteHao" target="_blank" rel="noopener">Yue Hao</a>. All Rights Reserved.</footer>
+
+<script src="./melodies.js"></script>
+<script src="./engine.js"></script>
+<script>
+(function(){
+  function qs(k){ return new URLSearchParams(location.search).get(k); }
+  var app=document.getElementById('app');
+  // region (Chinese) -> [tag class, English label]
+  var REG={'陕北':['sx','Northern Shaanxi 陕北'],'陕西':['sx2','Shaanxi · modern 陕西'],'山东':['sd','Shandong 山东'],'江南':['jn','Jiangnan 江南']};
+
+  function fail(msg){ app.innerHTML='<div class="card"><div class="pending">'+msg+'</div></div>'; }
+
+  var id=qs('id');
+  if(!id){ fail('Missing melody id. Please enter from the <a href="./index.html">Samples</a>.'); return; }
+
+  JP.getMelodies('./melody.txt').then(function(db){
+    var m=db.filter(function(x){ return x.id===id; })[0];
+    if(!m){ fail('No melody found for id = "'+id+'". <a href="./index.html">Back to Samples</a>'); return; }
+    var reg=REG[m.region]||['sx', m.region||''];
+    document.title=m.title+' — Chinese Folk Melody Texture';
+    document.getElementById('title').innerHTML=m.title+(m.en?' <span class="en-title">'+m.en+'</span>':'')+' <span class="tag '+reg[0]+'" style="font-size:13px;vertical-align:middle">'+reg[1]+'</span>';
+    document.getElementById('meta').textContent = m.notes || '';   // one-sentence description only
+    // optional "About this piece" card (image + write-up)
+    if(m.about || m.image){
+      var ab=document.createElement('div'); ab.className='card about-card';
+      var hd=document.createElement('h2'); hd.textContent='About this piece'; ab.appendChild(hd);
+      if(m.image){ var im=document.createElement('img'); im.className='about-img'; im.src='./'+m.image; im.alt=m.title||''; ab.appendChild(im); }
+      if(m.about){ var tx=document.createElement('div'); tx.className='about-text'; tx.innerHTML=m.about; ab.appendChild(tx); }
+      if(m.video){ var vl=document.createElement('p'); vl.className='about-video'; var va=document.createElement('a'); va.href=m.video; va.target='_blank'; va.rel='noopener'; va.textContent='▶ '+(m.video_title||'Listen on YouTube'); vl.appendChild(va); vl.appendChild(document.createTextNode(' (YouTube)')); ab.appendChild(vl); }
+      app.appendChild(ab);
+    }
+    // one analyzer per theme (jianpu, jianpu2, jianpu3 …) — parse each separately
+    var themeKeys=['jianpu','jianpu2','jianpu3','jianpu4'], themes=[];
+    themeKeys.forEach(function(k,i){ var v=m[k]; if(v && String(v).trim() && String(v).trim().toUpperCase()!=='TODO'){ var s=(i===0?'':String(i+1)); themes.push({label:'Theme '+(i+1), jianpu:v, key:m['key'+s]||m.key, meter:m['meter'+s]||m.meter, bpm:m['bpm'+s]||m.bpm}); } });
+    if(themes.length>1){
+      themes.forEach(function(t){
+        var h=document.createElement('h2'); h.className='theme-h'; h.textContent=t.label; app.appendChild(h);
+        var box=document.createElement('div'); app.appendChild(box);
+        JP.mountAnalyzer(box, {key:t.key, meter:t.meter, bpm:t.bpm, jianpu:t.jianpu});
+      });
+    } else {
+      var box0=document.createElement('div'); app.appendChild(box0);   // mount in a child so the About card above survives
+      JP.mountAnalyzer(box0, m);
+    }
+  }).catch(function(e){
+    fail('Couldn’t load melody.txt ('+e.message+'). For local preview run <code>python3 -m http.server</code>, or view on GitHub Pages.');
+  });
+})();
+</script>
+</body>
+</html>

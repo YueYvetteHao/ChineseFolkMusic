@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎵</text></svg>">
+<title>Northern Shaanxi vs Jiangnan — Chinese Folk Melody Texture</title>
+<link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+<header class="site-head">
+  <h1>Chinese Folk Melody Texture</h1>
+  <span class="byline">by <a href="https://yueyvettehao.github.io/" target="_blank" rel="noopener">Yue Hao</a></span>
+  <nav class="site-nav">
+    <a href="./index.html">Compare</a>
+    <a href="./statistics.html">Stats</a>
+    <a href="./scale-wheels.html">Scales</a>
+    <a href="./interval-analyzer.html">Analyzer</a>
+    <a href="https://github.com/" target="_blank" rel="noopener">GitHub</a>
+  </nav>
+</header>
+<img class="hero" src="./assets/banner.jpg"
+     alt="Split illustration: left — a Northern Shaanxi (陕北) folk singer in red on the yellow loess plateau among red mountain lilies (山丹丹) and cave dwellings; right — a Jiangnan (江南) musician playing the pipa by a water town with an arched bridge, jasmine (茉莉花) and willows. The two regional melodic textures this study compares.">
+<p class="sub">Most Chinese folk music is built on the same <a href="./scale-wheels.html">pentatonic scale</a> (宫商角徵羽), yet tunes from the north and the south can sound worlds apart. Up on the wind-blown Loess Plateau (黄土高坡) of the Yellow River (黄河) valley, the <a href="./melody.html?id=sanshilipu"><em>xintianyou</em> (信天游)</a> ballads of Northern Shaanxi (陕北) ring out high and mournful, steeped in a vast, aching desolation; down in the water towns of Jiangnan (江南) — the land south of the lower reaches of the Yangtze — the soft Wu dialect (吴侬软语) turns melody tender and lingering, delicate and refined. This project compares the two textures by quantifying the melody itself: it measures the <strong>semitone (chromatic) distance</strong> between every consecutive pair of notes in a theme, then shows it two ways — a <strong>melodic contour</strong> with each leap labeled and color-coded, and an <strong>interval-distribution histogram</strong> — so a region's musical "accent" becomes something you can see.</p>
+<aside class="key-finding">
+  <span class="key-finding-tag">★ Headline finding</span>
+  <p><strong>The Northern Shaanxi (陕北) signature — oscillating wide leaps:</strong> the tune springs a wide leap (a 4th, 5th, or more) and immediately answers it with another wide leap the opposite way — up, down, up, down — for a bold, far-carrying, heroic sound. On the contour you spot it instantly as a <strong>zigzag of orange/red boxes</strong> (orange = 4th/5th, red = wider) pointing alternately up then down. The key isn't just that the leaps are big — it's that a leap is <em>answered by another leap</em>, not smoothed over by small steps.</p>
+</aside>
+<p class="sub"><strong>The Jiangnan (江南) signature</strong> is the mirror image: mostly 3rds and small steps, so the line stays smooth and close — gentle and delicate — with few or no orange boxes.</p>
+<p class="sub"><strong>Shandong (山东)</strong> sits between the two — a third-texture extension (example:《沂蒙山小调》): wide leaps do appear, but singly, set into largely stepwise motion, rather than chaining into the Shaanxi saw-tooth. Each interval is also named (e.g. Perfect 5th / P5), tying the picture back to the hypothesis.</p>
+<main class="wrap">
+  <div class="card">
+    <h2>Signature comparison &nbsp;·&nbsp; <a href="./statistics.html">See Statistics</a></h2>
+    <div class="compare">
+      <div class="col">
+        <h3><a href="./melody.html?id=shandandan">《山丹丹开花红艳艳》</a> <span class="tag sx">陕北 N. Shaanxi</span></h3>
+        <div class="src">“Mountain Lilies Bloom Bright Red”</div>
+        <div class="src" id="srcA"></div>
+        <div id="cmpA"></div>
+      </div>
+      <div class="col">
+        <h3><a href="./melody.html?id=molihua">《茉莉花》</a> <span class="tag jn">江南 Jiangnan</span></h3>
+        <div class="src">“Jasmine Flower”</div>
+        <div class="src" id="srcB"></div>
+        <div id="cmpB"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Samples</h2>
+    <p class="src" style="margin:-4px 0 14px">Chinese folk songs, and melodies inspired by or adapted from them.</p>
+    <p class="sub"><a href="./statistics.html"><strong>→ Full 4-vs-4 statistical comparison</strong></a> — pooled interval distributions, significance tests (chi-square + Mann–Whitney), and summary plots across the eight core tunes.</p>
+    <div id="dir"></div>
+  </div>
+</main>
+
+<footer class="foot">© 2026 <a href="https://github.com/YueYvetteHao" target="_blank" rel="noopener">Yue Hao</a>. All Rights Reserved.</footer>
+
+<script src="./melodies.js"></script>
+<script src="./engine.js"></script>
+<script>
+(function(){
+  // region key (matches the Chinese `region` field in melody.txt) -> [tag class, English label]
+  var REGIONS=[['陕北',['sx','Northern Shaanxi 陕北']],['陕西',['sx2','Shaanxi · modern 陕西']],['江南',['jn','Jiangnan 江南']],['山东',['sd','Shandong 山东']]];
+
+  JP.getMelodies('./melody.txt').then(function(db){
+    var byId={}; db.forEach(function(m){ byId[m.id]=m; });
+
+    // ---- signature comparison ----
+    var A=byId['shandandan'], B=byId['molihua'];
+    if(A){ document.getElementById('srcA').textContent=A.source||''; JP.mountMini(document.getElementById('cmpA'), A); }
+    if(B){ document.getElementById('srcB').textContent=B.source||''; JP.mountMini(document.getElementById('cmpB'), B); }
+
+    // ---- samples directory grouped by region ----
+    var dir=document.getElementById('dir'), html='';
+    REGIONS.forEach(function(r){
+      var cn=r[1][0], label=r[1][1];
+      var items=db.filter(function(m){ return (m.region||'').indexOf(r[0])===0; });
+      if(!items.length) return;
+      html+='<div class="region-h"><span class="tag '+cn+'">'+label+'</span> '+items.length+' pieces</div><div class="grid">';
+      items.forEach(function(m){
+        var ready=m.hasJianpu;
+        html+='<a class="mcard" href="./melody.html?id='+encodeURIComponent(m.id)+'">'+
+                '<div class="t">'+m.title+'</div>'+
+                (m.en?'<div class="t-en">'+m.en+'</div>':'')+
+                '<div class="s">'+(m.source||'')+'</div>'+
+                '<span class="badge '+(ready?'ready':'todo')+'">'+(ready?'ready':'pending')+'</span>'+
+              '</a>';
+      });
+      html+='</div>';
+    });
+    dir.innerHTML=html;
+  }).catch(function(e){
+    document.getElementById('dir').innerHTML='<div class="pending">Couldn’t load melody.txt ('+e.message+').<br>For local preview, run <code>python3 -m http.server</code> in this folder and open http://localhost:8000/ ; on GitHub Pages it loads directly.</div>';
+  });
+})();
+</script>
+</body>
+</html>
