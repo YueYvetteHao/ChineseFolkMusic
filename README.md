@@ -1,4 +1,4 @@
-# Chinese Folk Melody Texture
+# [Chinese Folk Melody Texture](https://yueyvettehao.github.io/ChineseFolkMusic/)
 
 An interactive study of **melodic interval texture** in Chinese folk music. It parses a theme written
 in **Jianpu 简谱 (numbered notation)**, measures the **semitone distance between every consecutive pair
