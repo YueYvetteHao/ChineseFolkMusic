@@ -64,7 +64,7 @@ key: 1=C
 meter: 2/2
 bpm: 88
 jianpu: 2'3'_2'_6_.6__6_6_2'3'_2'_2'-2'.5'_1'7_6_5--5_5_66_3'_2'1'_7_6_45_62'54_3_26,_1_2---
-jianpu2: 2'62'62'_.1'__2'_3'_2'-5'_5'2'_3'_2'_1'6_.5__4_2_5-6_3'_2'_1'_2'1'6_2'_6_2_4.5_6_65_4_6_5_3_2.1_2-
+jianpu2: 2'62'62'_.#1'__2'_3'_2'-5'_5'2'_3'_2'_1'6_.5__4_2_5-6_3'_2'_1'_2'1'6_2'_6_2_4.5_6_65_4_6_5_3_2.1_2-
 meter2: 4/4
 bpm2: 140
 notes: A 1971 arrangement (刘烽 / Liu Feng) drawn from N. Shaanxi xintianyou and E. Gansu (陇东) tunes, celebrating the Red Army's arrival in northern Shaanxi; iconic and widely sung — an arrangement, not a field recording. One of the landing-page comparison pieces.
